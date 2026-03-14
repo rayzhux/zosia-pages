@@ -10,5 +10,18 @@
         { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate" }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(GPTBot|ChatGPT-User|OAI-SearchBot|ClaudeBot|anthropic-ai|claude-web|CCBot|Bytespider|Google-Extended|FacebookBot|Meta-ExternalAgent|Meta-ExternalFetcher|Amazonbot|Applebot-Extended|PerplexityBot|Cohere-ai|YouBot|Diffbot|Timpibot|AI2Bot|img2dataset|omgili|omgilibot|Scrapy|HTTrack|DataForSeoBot|webzio-extended|PetalBot|Sogou|SemrushBot|AhrefsBot|DotBot|SeekportBot|BLEXBot|MJ12bot|Bytedance).*"
+        }
+      ],
+      "destination": "/api/blocked"
+    }
   ]
 }
