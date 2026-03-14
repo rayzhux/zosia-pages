@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search & Research Architecture — Before → Problems → Plan</title>
+  <title>Search & Research Architecture — 10-Round Eval Results</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -60,7 +60,6 @@
     }
     .page { max-width: 1100px; margin: 0 auto; padding: 60px 24px 80px; }
 
-    /* Hero */
     .hero {
       text-align: center;
       margin-bottom: 64px;
@@ -75,23 +74,49 @@
       font-weight: 700;
       letter-spacing: -0.02em;
       margin-bottom: 12px;
-      color: var(--text);
     }
     .hero p {
       font-size: 17px;
       color: var(--text-dim);
-      max-width: 600px;
+      max-width: 640px;
       margin: 0 auto;
     }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+    .hero-stat {
+      text-align: center;
+    }
+    .hero-stat .num {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .hero-stat .num--green { color: var(--accent-green); }
+    .hero-stat .num--blue { color: var(--accent-blue); }
+    .hero-stat .num--amber { color: var(--accent-amber); }
+    .hero-stat .label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
 
-    /* Phase sections */
     .phase {
       margin-bottom: 56px;
       animation: fadeUp 0.6s ease both;
     }
     .phase:nth-child(3) { animation-delay: 0.1s; }
-    .phase:nth-child(4) { animation-delay: 0.2s; }
-    .phase:nth-child(5) { animation-delay: 0.3s; }
+    .phase:nth-child(4) { animation-delay: 0.15s; }
+    .phase:nth-child(5) { animation-delay: 0.2s; }
+    .phase:nth-child(6) { animation-delay: 0.25s; }
+    .phase:nth-child(7) { animation-delay: 0.3s; }
 
     .phase-label {
       display: inline-flex;
@@ -106,26 +131,11 @@
       border-radius: 6px;
       margin-bottom: 16px;
     }
-    .phase-label--before {
-      background: var(--accent-red-dim);
-      color: var(--accent-red);
-      border: 1px solid var(--accent-red);
-    }
-    .phase-label--problems {
-      background: var(--accent-amber-dim);
-      color: var(--accent-amber);
-      border: 1px solid var(--accent-amber);
-    }
-    .phase-label--plan {
-      background: var(--accent-green-dim);
-      color: var(--accent-green);
-      border: 1px solid var(--accent-green);
-    }
-    .phase-label--taxonomy {
-      background: var(--accent-blue-dim);
-      color: var(--accent-blue);
-      border: 1px solid var(--accent-blue);
-    }
+    .phase-label--before { background: var(--accent-red-dim); color: var(--accent-red); border: 1px solid var(--accent-red); }
+    .phase-label--problems { background: var(--accent-amber-dim); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
+    .phase-label--plan { background: var(--accent-green-dim); color: var(--accent-green); border: 1px solid var(--accent-green); }
+    .phase-label--taxonomy { background: var(--accent-blue-dim); color: var(--accent-blue); border: 1px solid var(--accent-blue); }
+    .phase-label--results { background: var(--accent-sage-dim); color: var(--accent-sage); border: 1px solid var(--accent-sage); }
 
     .phase h2 {
       font-size: 24px;
@@ -134,11 +144,7 @@
       letter-spacing: -0.01em;
     }
 
-    /* Cards */
-    .card-grid {
-      display: grid;
-      gap: 16px;
-    }
+    .card-grid { display: grid; gap: 16px; }
     .card-grid--2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
     .card-grid--3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 
@@ -157,7 +163,6 @@
       background: var(--surface-dim);
       border-color: var(--border);
     }
-
     .ve-card h3 {
       font-size: 16px;
       font-weight: 600;
@@ -171,15 +176,8 @@
       color: var(--text-dim);
       line-height: 1.65;
     }
-    .ve-card ul {
-      list-style: none;
-      padding: 0;
-    }
-    .ve-card li {
-      padding: 4px 0;
-      padding-left: 16px;
-      position: relative;
-    }
+    .ve-card ul { list-style: none; padding: 0; }
+    .ve-card li { padding: 4px 0 4px 16px; position: relative; }
     .ve-card li::before {
       content: '';
       position: absolute;
@@ -191,20 +189,13 @@
       background: var(--text-muted);
     }
 
-    /* Status indicators */
-    .dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .dot--red { background: var(--accent-red); }
     .dot--amber { background: var(--accent-amber); }
     .dot--green { background: var(--accent-green); }
     .dot--blue { background: var(--accent-blue); }
+    .dot--sage { background: var(--accent-sage); }
 
-    /* File badges */
     .file-badge {
       font-family: var(--font-mono);
       font-size: 12px;
@@ -226,7 +217,6 @@
       box-shadow: 0 2px 12px rgba(0,0,0,0.04);
       overflow-x: auto;
     }
-
     .flow-row {
       display: flex;
       align-items: stretch;
@@ -235,7 +225,6 @@
       flex-wrap: nowrap;
       min-width: 700px;
     }
-
     .flow-node {
       display: flex;
       flex-direction: column;
@@ -247,20 +236,11 @@
       max-width: 180px;
       flex: 1;
       text-align: center;
-      position: relative;
     }
-    .flow-node h4 {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    .flow-node p {
-      font-size: 12px;
-      color: var(--text-dim);
-      line-height: 1.5;
-    }
+    .flow-node h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .flow-node p { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
     .flow-node .flow-icon {
-      font-size: 24px;
+      font-size: 16px;
       margin-bottom: 8px;
       width: 44px;
       height: 44px;
@@ -270,43 +250,65 @@
       border-radius: 10px;
       font-weight: 700;
       font-family: var(--font-mono);
-      font-size: 16px;
     }
-
     .flow-node--discovery { background: var(--accent-blue-dim); border: 1.5px solid var(--accent-blue); }
     .flow-node--discovery .flow-icon { background: var(--accent-blue); color: white; }
-
     .flow-node--extraction { background: var(--accent-sage-dim); border: 1.5px solid var(--accent-sage); }
     .flow-node--extraction .flow-icon { background: var(--accent-sage); color: white; }
-
     .flow-node--synthesis { background: var(--accent-amber-dim); border: 1.5px solid var(--accent-amber); }
     .flow-node--synthesis .flow-icon { background: var(--accent-amber); color: white; }
-
     .flow-node--deep { background: var(--accent-red-dim); border: 1.5px solid var(--accent-red); }
     .flow-node--deep .flow-icon { background: var(--accent-red); color: white; }
+    .flow-arrow { display: flex; align-items: center; justify-content: center; min-width: 40px; color: var(--text-muted); font-size: 20px; flex-shrink: 0; }
 
-    .flow-arrow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 40px;
-      color: var(--text-muted);
-      font-size: 20px;
-      flex-shrink: 0;
+    /* Round tracker */
+    .round-track {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 8px;
+      margin-top: 20px;
     }
+    .round-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .round-card .round-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .round-card .round-score {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 4px 0 2px;
+    }
+    .round-card .round-total {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .round-card--perfect { border-color: var(--accent-green); background: var(--accent-green-dim); }
+    .round-card--perfect .round-score { color: var(--accent-green); }
+    .round-card--good .round-score { color: var(--accent-blue); }
+    .round-card--mixed .round-score { color: var(--accent-amber); }
 
-    /* Comparison table */
-    .compare-table {
+    /* Rules table */
+    .rules-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      font-size: 13px;
       margin-top: 16px;
     }
-    .compare-table th {
+    .rules-table th {
       text-align: left;
-      padding: 12px 16px;
+      padding: 10px 14px;
       font-weight: 600;
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
@@ -315,164 +317,116 @@
       top: 0;
       background: var(--surface);
     }
-    .compare-table td {
-      padding: 12px 16px;
+    .rules-table td {
+      padding: 10px 14px;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
     }
-    .compare-table tr:last-child td { border-bottom: none; }
-    .compare-table code {
+    .rules-table tr:last-child td { border-bottom: none; }
+    .rules-table code {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11px;
       padding: 2px 6px;
       border-radius: 4px;
       background: var(--surface-dim);
       border: 1px solid var(--border);
     }
 
-    /* Change cards */
-    .change-card {
+    /* Key principles */
+    .principle {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 16px;
-      border-left: 4px solid var(--accent-green);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--accent-blue);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
     }
-    .change-card h4 {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 4px;
+    .principle .p-num {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-blue);
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      background: var(--accent-blue-dim);
+      border-radius: 8px;
+      border: 1px solid var(--accent-blue);
     }
-    .change-card .change-file {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-    .change-card p, .change-card li {
-      font-size: 14px;
-      color: var(--text-dim);
-      line-height: 1.65;
-    }
-    .change-card ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 8px;
-    }
-    .change-card li {
-      padding: 3px 0 3px 16px;
-      position: relative;
-    }
-    .change-card li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 11px;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
-    .change-card li.add::before { background: var(--accent-green); }
-    .change-card li.remove::before { background: var(--accent-red); }
-    .change-card li.modify::before { background: var(--accent-amber); }
+    .principle .p-body { flex: 1; min-width: 0; }
+    .principle .p-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .principle .p-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
 
-    /* Before/After side by side */
-    .before-after {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 16px;
-    }
-    @media (max-width: 700px) {
-      .before-after { grid-template-columns: 1fr; }
-    }
-    .ba-col {
-      padding: 20px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-family: var(--font-mono);
-      line-height: 1.7;
-      white-space: pre-wrap;
-      overflow-wrap: break-word;
-    }
-    .ba-col--before {
-      background: var(--accent-red-dim);
-      border: 1px solid var(--accent-red);
-      color: var(--text);
-    }
-    .ba-col--after {
-      background: var(--accent-green-dim);
-      border: 1px solid var(--accent-green);
-      color: var(--text);
-    }
-    .ba-col .ba-label {
-      font-weight: 600;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 10px;
-      display: block;
-    }
-    .ba-col--before .ba-label { color: var(--accent-red); }
-    .ba-col--after .ba-label { color: var(--accent-green); }
-
-    /* Eval section */
+    /* Eval grid */
     .eval-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 10px;
       margin-top: 16px;
     }
     .eval-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 16px 20px;
+      padding: 12px 16px;
       display: flex;
       align-items: flex-start;
-      gap: 12px;
+      gap: 10px;
     }
-    .eval-card .eval-num {
+    .eval-card .eval-id {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 2px 6px;
+      border-radius: 4px;
       flex-shrink: 0;
-      background: var(--accent-blue-dim);
-      color: var(--accent-blue);
-      border: 1px solid var(--accent-blue);
+      background: var(--accent-green-dim);
+      color: var(--accent-green);
+      border: 1px solid var(--accent-green);
     }
-    .eval-card .eval-body {
-      flex: 1;
-      min-width: 0;
+    .eval-card .eval-body { flex: 1; min-width: 0; }
+    .eval-card .eval-prompt { font-size: 12px; color: var(--text); margin-bottom: 3px; overflow-wrap: break-word; }
+    .eval-card .eval-route { font-size: 11px; color: var(--text-dim); font-family: var(--font-mono); overflow-wrap: break-word; }
+
+    /* Change log */
+    .changelog {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
     }
-    .eval-card .eval-prompt {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
+    .cl-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+    }
+    .cl-card .cl-round {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .cl-card .cl-fix {
+      font-size: 14px;
+      font-weight: 600;
       margin-bottom: 4px;
     }
-    .eval-card .eval-expect {
+    .cl-card .cl-detail {
       font-size: 12px;
       color: var(--text-dim);
-      font-family: var(--font-mono);
+      line-height: 1.6;
     }
 
-    /* Separator */
-    .separator {
-      height: 1px;
-      background: var(--border);
-      margin: 48px 0;
-    }
+    .separator { height: 1px; background: var(--border); margin: 48px 0; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
@@ -486,377 +440,351 @@
     <!-- Hero -->
     <div class="hero">
       <h1>Search & Research Architecture</h1>
-      <p>First-principles redesign of how Zosia discovers, extracts, synthesizes, and deep-researches information.</p>
+      <p>First-principles redesign of how Zosia discovers, extracts, synthesizes, and deep-researches information. 10 rounds of eval-driven iteration with GPT-5.4 as evaluator.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num num--green">32/32</div>
+          <div class="label">Final score</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num num--blue">10</div>
+          <div class="label">Rounds</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num num--amber">A</div>
+          <div class="label">Grade</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num" style="color: var(--text-dim);">5%</div>
+          <div class="label">Residual risk</div>
+        </div>
+      </div>
     </div>
 
     <!-- ============ SECTION 1: BEFORE ============ -->
     <div class="phase">
-      <div class="phase-label phase-label--before">
-        <span class="dot dot--red"></span> Phase 1 — Current State
-      </div>
-      <h2>What exists today</h2>
-      <p style="color: var(--text-dim); margin-bottom: 20px; font-size: 15px;">Five files control search behavior. They overlap, contradict each other, and optimize for cost over quality.</p>
-
+      <div class="phase-label phase-label--before"><span class="dot dot--red"></span> Before</div>
+      <h2>What existed before this work</h2>
       <div class="card-grid card-grid--2">
         <div class="ve-card">
           <h3><span class="file-badge">exa/SKILL.md</span></h3>
           <ul>
-            <li>7 Exa tools documented with costs</li>
-            <li>Routing table says "web_fetch first (free)" for known URLs</li>
-            <li>No escalation framework — when to use deep_search vs deep_researcher is unclear</li>
-            <li>Cost framing baked into every tool description</li>
+            <li>Cost-framed reference table ($0.007/query, etc.)</li>
+            <li>No escalation framework for when to use deep research</li>
+            <li>"web_fetch first (free)" baked into routing</li>
           </ul>
         </div>
         <div class="ve-card">
           <h3><span class="file-badge">doc-lookup/SKILL.md</span></h3>
           <ul>
-            <li>200+ lines, built entirely around web_fetch</li>
-            <li>Never calls Exa search to find docs</li>
-            <li>Guesses URLs from training data or manual resolution</li>
-            <li>Exa mentioned once — as a fallback for JS pages</li>
+            <li>200+ lines built around web_fetch</li>
+            <li>Never called Exa to discover docs — guessed URLs</li>
+            <li>Exa mentioned once as a JS-page fallback</li>
           </ul>
         </div>
         <div class="ve-card">
           <h3><span class="file-badge">TOOLS.md</span></h3>
           <ul>
-            <li>Says "Exa (primary)" — correct</li>
-            <li>Then says "web_fetch first (free, instant)" — contradicts itself</li>
-            <li>Blurs search and extraction under one heading</li>
-            <li>Cost signals everywhere</li>
+            <li>"Exa primary" then immediately "web_fetch first (free)"</li>
+            <li>Search and extraction blurred under one heading</li>
           </ul>
         </div>
         <div class="ve-card">
           <h3><span class="file-badge">web-scraper/SKILL.md</span></h3>
           <ul>
-            <li style="color: var(--accent-green);">✓ Correctly scoped to URL extraction only</li>
-            <li style="color: var(--accent-green);">✓ Says "NOT for: web search (use Exa)"</li>
-            <li>No changes needed — this one's clean</li>
+            <li>6-step cascade: web_fetch → Jina → CF /markdown → CF /json → CF /crawl → Playwright</li>
+            <li>Jina and CF /markdown rarely used in practice</li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- ============ SECTION 2: PROBLEMS ============ -->
+    <!-- ============ SECTION 2: ROOT CAUSE ============ -->
     <div class="phase">
-      <div class="phase-label phase-label--problems">
-        <span class="dot dot--amber"></span> Phase 2 — Root Cause Diagnosis
-      </div>
-      <h2>Why results suffer</h2>
-      <p style="color: var(--text-dim); margin-bottom: 20px; font-size: 15px;">The core bug is <strong>category confusion</strong>. Four different jobs keep getting blurred into one "search" concept.</p>
-
+      <div class="phase-label phase-label--problems"><span class="dot dot--amber"></span> Root Cause</div>
+      <h2>Category confusion</h2>
+      <p style="color: var(--text-dim); margin-bottom: 20px; font-size: 15px;">Four different jobs were blurred into one "search" concept. Cost optimization was the routing signal, not quality.</p>
       <div class="card-grid card-grid--2">
         <div class="ve-card ve-card--hero">
-          <h3><span class="dot dot--amber"></span> Problem 1: No routing taxonomy</h3>
-          <p>Each file defines its own rules for when to search vs fetch vs research. They drift independently. No single source of truth forces consistency.</p>
+          <h3><span class="dot dot--amber"></span> No routing taxonomy</h3>
+          <p>Each file defined its own rules. They drifted independently with no single source of truth.</p>
         </div>
         <div class="ve-card ve-card--hero">
-          <h3><span class="dot dot--amber"></span> Problem 2: doc-lookup is search-blind</h3>
-          <p>When I need current docs, I guess URLs from training data instead of using Exa to find the canonical source. This is the single biggest quality gap.</p>
+          <h3><span class="dot dot--amber"></span> Doc-lookup was search-blind</h3>
+          <p>Guessed URLs from training data instead of using Exa to find the canonical docs source.</p>
         </div>
         <div class="ve-card ve-card--hero">
-          <h3><span class="dot dot--amber"></span> Problem 3: No deep research trigger</h3>
-          <p>"Deep research" has no explicit definition. No instruction says "when Raymond says deep research → deep_researcher_start with exa-research-pro." I default to basic search.</p>
+          <h3><span class="dot dot--amber"></span> No deep research trigger</h3>
+          <p>"Deep research" had no definition. No instruction mapped it to deep_researcher_start with exa-research-pro.</p>
         </div>
         <div class="ve-card ve-card--hero">
-          <h3><span class="dot dot--amber"></span> Problem 4: Cost optimization over quality</h3>
-          <p>Cost appears in tool selection logic everywhere. "web_fetch first (free)" trains me to avoid the tools that produce better results. Quality should be the only routing signal.</p>
+          <h3><span class="dot dot--amber"></span> Cost over quality</h3>
+          <p>"web_fetch first (free)" trained the agent to avoid tools that produce better results.</p>
         </div>
       </div>
     </div>
 
     <!-- ============ SECTION 3: TAXONOMY ============ -->
     <div class="phase">
-      <div class="phase-label phase-label--taxonomy">
-        <span class="dot dot--blue"></span> Phase 3 — The Taxonomy
-      </div>
+      <div class="phase-label phase-label--taxonomy"><span class="dot dot--blue"></span> The Taxonomy</div>
       <h2>Four jobs, four owners</h2>
-      <p style="color: var(--text-dim); margin-bottom: 20px; font-size: 15px;">Every information need falls into exactly one of these categories. This taxonomy appears identically in all files.</p>
-
       <div class="flow-container">
         <div class="flow-row">
           <div class="flow-node flow-node--discovery">
             <div class="flow-icon">D</div>
             <h4>Discovery</h4>
-            <p>Find the right sources, pages, companies, or people</p>
+            <p>Find sources, pages, companies, people</p>
             <p style="margin-top: 8px; font-weight: 600; color: var(--accent-blue);">→ Exa Search</p>
           </div>
           <div class="flow-arrow">→</div>
           <div class="flow-node flow-node--extraction">
             <div class="flow-icon">E</div>
             <h4>Extraction</h4>
-            <p>Read a known URL and get its content</p>
-            <p style="margin-top: 8px; font-weight: 600; color: var(--accent-sage);">→ web_fetch / web-scraper</p>
+            <p>Read a known URL</p>
+            <p style="margin-top: 8px; font-weight: 600; color: var(--accent-sage);">→ web_fetch / crawling_exa</p>
           </div>
           <div class="flow-arrow">→</div>
           <div class="flow-node flow-node--synthesis">
             <div class="flow-icon">S</div>
             <h4>Synthesis</h4>
-            <p>Combine multiple sources into one cited answer</p>
+            <p>Multi-source answer with citations</p>
             <p style="margin-top: 8px; font-weight: 600; color: var(--accent-amber);">→ deep_search_exa</p>
           </div>
           <div class="flow-arrow">→</div>
           <div class="flow-node flow-node--deep">
             <div class="flow-icon">R</div>
             <h4>Deep Research</h4>
-            <p>Full multi-step investigation with comprehensive report</p>
+            <p>Full investigation, report-grade</p>
             <p style="margin-top: 8px; font-weight: 600; color: var(--accent-red);">→ deep_researcher (pro)</p>
           </div>
         </div>
       </div>
+    </div>
 
-      <div style="margin-top: 24px;">
-        <div class="ve-card ve-card--recessed">
-          <h3>Quick routing rules</h3>
-          <table class="compare-table">
-            <thead>
-              <tr>
-                <th>The question</th>
-                <th>Category</th>
-                <th>Tool</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>"What's the current state of X?"</td>
-                <td>Discovery</td>
-                <td><code>web_search_exa</code> or <code>web_search_advanced_exa</code></td>
-              </tr>
-              <tr>
-                <td>"Read this URL for me"</td>
-                <td>Extraction</td>
-                <td><code>web_fetch</code> → web-scraper cascade</td>
-              </tr>
-              <tr>
-                <td>"How does X SDK auth work?"</td>
-                <td>Discovery + Extraction</td>
-                <td>Exa finds docs → <code>web_fetch</code> reads them</td>
-              </tr>
-              <tr>
-                <td>"Compare X vs Y for our use case"</td>
-                <td>Synthesis</td>
-                <td><code>deep_search_exa</code></td>
-              </tr>
-              <tr>
-                <td>"Find GCC competitors for X"</td>
-                <td>Discovery</td>
-                <td><code>company_research_exa</code> + <code>web_search_advanced_exa</code></td>
-              </tr>
-              <tr>
-                <td>"Deep research the UAE aftermarket"</td>
-                <td>Deep Research</td>
-                <td><code>deep_researcher_start</code> with <code>exa-research-pro</code></td>
-              </tr>
-              <tr>
-                <td>"Research X" / "Look into X"</td>
-                <td>Synthesis</td>
-                <td><code>deep_search_exa</code> (upgrade to deep researcher if complex)</td>
-              </tr>
-              <tr>
-                <td>"What are people saying about X on Twitter?"</td>
-                <td>Specialized</td>
-                <td><code>grok-x</code></td>
-              </tr>
-              <tr>
-                <td>"Find Chinese gov filings on X"</td>
-                <td>Specialized</td>
-                <td><code>kimi-cn</code></td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="separator"></div>
+
+    <!-- ============ SECTION 4: KEY PRINCIPLES ============ -->
+    <div class="phase">
+      <div class="phase-label phase-label--plan"><span class="dot dot--green"></span> Key Principles</div>
+      <h2>Rules that emerged across 10 rounds</h2>
+
+      <div class="principle">
+        <div class="p-num">1</div>
+        <div class="p-body">
+          <div class="p-title">Substance beats verbs</div>
+          <div class="p-desc">Route based on the information need, not the user's word choice. "Research how Supabase handles realtime" is still a single-product docs question — it goes to doc-lookup despite the verb "research."</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="p-num">2</div>
+        <div class="p-body">
+          <div class="p-title">Exa finds pages. web_fetch reads them.</div>
+          <div class="p-desc">Discovery and extraction are different jobs. Never use web_fetch to "search" and never use Exa to "read a known URL."</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="p-num">3</div>
+        <div class="p-body">
+          <div class="p-title">Decompose compound prompts</div>
+          <div class="p-desc">If one sentence has multiple information needs ("read this URL AND tell me if X is supported"), split and route each sub-need independently.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="p-num">4</div>
+        <div class="p-body">
+          <div class="p-title">Implicit comparison language upgrades to synthesis</div>
+          <div class="p-desc">"Deciding between," "worth switching from," "evaluating X vs Y" signal multi-product comparison even if the prompt leads with one product name.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="p-num">5</div>
+        <div class="p-body">
+          <div class="p-title">Frontmatter must match body</div>
+          <div class="p-desc">Skill selection happens from descriptions first. If the frontmatter contradicts the body rules, routing breaks at the trigger layer.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="p-num">6</div>
+        <div class="p-body">
+          <div class="p-title">Quality is the only routing signal</div>
+          <div class="p-desc">Cost never appears in the decision path. Route by which tool gives the best answer, not the cheapest call.</div>
         </div>
       </div>
     </div>
 
     <div class="separator"></div>
 
-    <!-- ============ SECTION 4: FILE CHANGES ============ -->
+    <!-- ============ SECTION 5: ROUND TRACKER ============ -->
     <div class="phase">
-      <div class="phase-label phase-label--plan">
-        <span class="dot dot--green"></span> Phase 4 — Execution Plan
-      </div>
-      <h2>What changes in each file</h2>
+      <div class="phase-label phase-label--results"><span class="dot dot--sage"></span> 10-Round Journey</div>
+      <h2>Eval scores across iterations</h2>
 
-      <div class="change-card">
-        <h4><span class="dot dot--green"></span> Change 1: exa/SKILL.md</h4>
-        <div class="change-file">skills/exa/SKILL.md</div>
-        <p>Restructure from a reference table into a quality-first decision framework.</p>
-        <ul>
-          <li class="remove">Remove: cost column from tool routing table</li>
-          <li class="remove">Remove: "web_fetch first (free, built-in)" from routing</li>
-          <li class="add">Add: the four-category taxonomy (Discovery → Extraction → Synthesis → Deep Research)</li>
-          <li class="add">Add: explicit rule — "deep research" = <code>deep_researcher_start(model=exa-research-pro)</code></li>
-          <li class="add">Add: explicit rule — "research X" / "look into X" = <code>deep_search_exa</code> minimum</li>
-          <li class="add">Add: quality-first framing — route by best results, not cheapest tool</li>
-          <li class="modify">Keep: tool reference docs, API quirks, timeout values (still useful)</li>
-        </ul>
-      </div>
-
-      <div class="change-card">
-        <h4><span class="dot dot--green"></span> Change 2: doc-lookup/SKILL.md</h4>
-        <div class="change-file">skills/doc-lookup/SKILL.md</div>
-        <p>Restructure as a two-phase workflow: discover canonical source via Exa, then extract official pages via web_fetch.</p>
-        <ul>
-          <li class="modify">Rewrite Step 2 "Resolve canonical source" → use <code>exa.web_search_exa</code> or <code>exa.web_search_advanced_exa</code> to find the official docs page</li>
-          <li class="remove">Remove: guessing URLs from training data / subdomain probing</li>
-          <li class="add">Add: rule that Exa finds pages, official pages anchor the answer</li>
-          <li class="modify">Keep: cache, docs-registry, Context Hub, retry suppression, project-type playbooks — these are all good</li>
-          <li class="modify">Keep: web_fetch/web-scraper for extraction phase (reading the pages Exa found)</li>
-        </ul>
-
-        <div class="before-after">
-          <div class="ba-col ba-col--before">
-            <span class="ba-label">Before: Step 2</span>
-"Resolve the canonical source"
-├── If user gave GitHub URL → fetch
-├── If user gave docs URL → use it
-├── Otherwise → guess from memory
-└── Don't spam subdomains</div>
-          <div class="ba-col ba-col--after">
-            <span class="ba-label">After: Step 2</span>
-"Discover canonical source via Exa"
-├── exa.web_search_exa for project
-│   + official docs/changelog/API
-├── Pick highest-signal result
-├── Extract with web_fetch
-└── Exa discovers, web_fetch reads</div>
+      <div class="round-track">
+        <div class="round-card round-card--mixed">
+          <div class="round-num">Round 1</div>
+          <div class="round-score">7/8</div>
+          <div class="round-total">87.5%</div>
+        </div>
+        <div class="round-card round-card--perfect">
+          <div class="round-num">Round 2</div>
+          <div class="round-score">8/8</div>
+          <div class="round-total">100%</div>
+        </div>
+        <div class="round-card round-card--good">
+          <div class="round-num">Round 3</div>
+          <div class="round-score">11/12</div>
+          <div class="round-total">91.7%</div>
+        </div>
+        <div class="round-card round-card--good">
+          <div class="round-num">Round 4</div>
+          <div class="round-score">14/16</div>
+          <div class="round-total">87.5%</div>
+        </div>
+        <div class="round-card round-card--perfect">
+          <div class="round-num">Round 5</div>
+          <div class="round-score">20/20</div>
+          <div class="round-total">100%</div>
+        </div>
+        <div class="round-card round-card--perfect">
+          <div class="round-num">Round 6</div>
+          <div class="round-score">24/24</div>
+          <div class="round-total">100%</div>
+        </div>
+        <div class="round-card round-card--mixed">
+          <div class="round-num">Round 7</div>
+          <div class="round-score">24/32</div>
+          <div class="round-total">75% 🔴</div>
+        </div>
+        <div class="round-card round-card--good">
+          <div class="round-num">Round 8</div>
+          <div class="round-score">30/32</div>
+          <div class="round-total">93.8%</div>
+        </div>
+        <div class="round-card round-card--good">
+          <div class="round-num">Round 9</div>
+          <div class="round-score">30/32</div>
+          <div class="round-total">93.8%</div>
+        </div>
+        <div class="round-card round-card--perfect">
+          <div class="round-num">Round 10</div>
+          <div class="round-score">32/32</div>
+          <div class="round-total">100% ✅</div>
         </div>
       </div>
 
-      <div class="change-card">
-        <h4><span class="dot dot--green"></span> Change 3: TOOLS.md</h4>
-        <div class="change-file">TOOLS.md</div>
-        <p>Split "Search Routing" and "Web Scraping" into separate sections with clear roles.</p>
-        <ul>
-          <li class="modify">Rename "Search Routing" section — include the taxonomy one-liner</li>
-          <li class="remove">Remove: "web_fetch first (free, instant)" from search section</li>
-          <li class="add">Add: one-liner — "Exa finds pages. web_fetch reads them. Don't mix these up."</li>
-          <li class="modify">Keep: web scraping cascade docs in a separate "URL Extraction" section</li>
-        </ul>
+      <p style="color: var(--text-dim); font-size: 13px; margin-top: 16px;">Round 7 dropped because GPT-5.4 switched to red-team mode and generated 8 adversarial prompts that broke the routing — compound prompts, implicit comparisons, mixed-language, and "deep research" override conflicts. All fixed by Round 10.</p>
+    </div>
 
-        <div class="before-after">
-          <div class="ba-col ba-col--before">
-            <span class="ba-label">Before: TOOLS.md</span>
-## Search Routing
-- Exa (primary): all web search
-- grok-x: X/Twitter
-- kimi-cn: Chinese web
+    <div class="separator"></div>
 
-## Web Scraping
-- Cascade: web_fetch → Jina → CF
-- web_fetch first (free, instant)</div>
-          <div class="ba-col ba-col--after">
-            <span class="ba-label">After: TOOLS.md</span>
-## Search & Research (Exa)
-- Discovery: exa.web_search_*
-- Synthesis: exa.deep_search_exa
-- Deep Research: deep_researcher (pro)
-- X/Twitter: grok-x
-- Chinese-only: kimi-cn
-Exa finds. web_fetch reads.
+    <!-- ============ SECTION 6: KEY FIXES PER ROUND ============ -->
+    <div class="phase">
+      <div class="phase-label phase-label--plan"><span class="dot dot--green"></span> Changelog</div>
+      <h2>What was fixed in each round</h2>
 
-## URL Extraction
-- Known URL → web_fetch → cascade
-- JS-heavy → web-scraper skill</div>
+      <div class="changelog">
+        <div class="cl-card">
+          <div class="cl-round">Round 1 → 2</div>
+          <div class="cl-fix">E6: doc-lookup vs Exa on "what changed"</div>
+          <div class="cl-detail">Added version comparison → deep_search_exa rule. Added "what changed" to doc-lookup exclusion list.</div>
         </div>
-      </div>
-
-      <div class="change-card">
-        <h4><span class="dot dot--green"></span> Change 4: Fallback Rules</h4>
-        <div class="change-file">Added to exa/SKILL.md</div>
-        <p>Explicit behavior when Exa underperforms.</p>
-        <ul>
-          <li class="add">If deep_researcher times out → fall back to <code>deep_search_exa</code> + manual Exa queries</li>
-          <li class="add">If Exa returns no results for docs → try GitHub repo search via Exa, then web_fetch on repo README</li>
-          <li class="add">If Exa and web_fetch both fail → report the gap honestly, don't fabricate</li>
-          <li class="add">For critical claims → verify from primary official sources, not just Exa synthesis</li>
-        </ul>
-      </div>
-
-      <div class="change-card" style="border-left-color: var(--accent-blue);">
-        <h4><span class="dot dot--blue"></span> Change 5: No changes needed</h4>
-        <div class="change-file">skills/web-scraper/SKILL.md · mcporter.json · runtime config</div>
-        <p>web-scraper is correctly scoped. Exa MCP config is correct (paid API, all 7 tools). Runtime has Brave disabled. All clean.</p>
+        <div class="cl-card">
+          <div class="cl-round">Round 2 → 3</div>
+          <div class="cl-fix">E2: Stale eval expectation</div>
+          <div class="cl-detail">Doc-lookup now correctly owns single-product docs questions. Updated E2 expected route.</div>
+        </div>
+        <div class="cl-card">
+          <div class="cl-round">Round 3 → 4</div>
+          <div class="cl-fix">E13/E15: Verbs outranking substance</div>
+          <div class="cl-detail">Added "substance beats verbs" precedence rule. Tightened deep-research upgrade criteria.</div>
+        </div>
+        <div class="cl-card">
+          <div class="cl-round">Round 4 → 5</div>
+          <div class="cl-fix">Frontmatter alignment</div>
+          <div class="cl-detail">Aligned both skill descriptions with body rules. Descriptions now guide correct skill selection before body is read.</div>
+        </div>
+        <div class="cl-card">
+          <div class="cl-round">Round 5 → 6</div>
+          <div class="cl-fix">E19 boundary: "deep research" + single product</div>
+          <div class="cl-detail">Added exception in exa frontmatter for single-product official-docs deep research. Added doc-lookup carveout.</div>
+        </div>
+        <div class="cl-card">
+          <div class="cl-round">Round 7 (red team)</div>
+          <div class="cl-fix">8 adversarial prompts broke routing</div>
+          <div class="cl-detail">Exposed: compound prompts, implicit comparison, specific changelog, "deep research" override, mixed-language.</div>
+        </div>
+        <div class="cl-card">
+          <div class="cl-round">Round 7 → 8</div>
+          <div class="cl-fix">Decomposition + implicit comparison + changelog split</div>
+          <div class="cl-detail">Added compound prompt decomposition rule. Added implicit comparison triggers. Split broad vs specific changelog routing.</div>
+        </div>
+        <div class="cl-card">
+          <div class="cl-round">Round 8 → 10</div>
+          <div class="cl-fix">Final frontmatter reconciliation</div>
+          <div class="cl-detail">Removed "always route here" for deep research in exa frontmatter. Both skills now say the exact same thing about single-product + "deep research."</div>
+        </div>
       </div>
     </div>
 
     <div class="separator"></div>
 
-    <!-- ============ SECTION 5: EVALS ============ -->
+    <!-- ============ SECTION 7: ALL 32 EVALS ============ -->
     <div class="phase">
-      <div class="phase-label phase-label--taxonomy">
-        <span class="dot dot--blue"></span> Phase 5 — Routing Evals
-      </div>
-      <h2>How we verify behavior changed</h2>
-      <p style="color: var(--text-dim); margin-bottom: 16px; font-size: 15px;">After updating the files, test these prompts and confirm the right tool fires. GPT-5.4 correctly flagged this as the biggest miss in my original plan.</p>
+      <div class="phase-label phase-label--results"><span class="dot dot--sage"></span> Full Eval Suite</div>
+      <h2>All 32 routing evals — all passing</h2>
 
       <div class="eval-grid">
-        <div class="eval-card">
-          <div class="eval-num">1</div>
-          <div class="eval-body">
-            <div class="eval-prompt">"Summarize this URL: https://example.com/page"</div>
-            <div class="eval-expect">→ web_fetch / web-scraper (no Exa)</div>
-          </div>
-        </div>
-        <div class="eval-card">
-          <div class="eval-num">2</div>
-          <div class="eval-body">
-            <div class="eval-prompt">"How does Stripe Connect onboarding work now?"</div>
-            <div class="eval-expect">→ doc-lookup → Exa search → web_fetch</div>
-          </div>
-        </div>
-        <div class="eval-card">
-          <div class="eval-num">3</div>
-          <div class="eval-body">
-            <div class="eval-prompt">"Find GCC competitors for Careem delivery"</div>
-            <div class="eval-expect">→ company_research_exa + web_search_advanced_exa</div>
-          </div>
-        </div>
-        <div class="eval-card">
-          <div class="eval-num">4</div>
-          <div class="eval-body">
-            <div class="eval-prompt">"Deep research the UAE aftermarket insurance stack"</div>
-            <div class="eval-expect">→ deep_researcher_start (exa-research-pro)</div>
-          </div>
-        </div>
-        <div class="eval-card">
-          <div class="eval-num">5</div>
-          <div class="eval-body">
-            <div class="eval-prompt">"What are people saying about OpenAI on X?"</div>
-            <div class="eval-expect">→ grok-x (not Exa)</div>
-          </div>
-        </div>
-        <div class="eval-card">
-          <div class="eval-num">6</div>
-          <div class="eval-body">
-            <div class="eval-prompt">"Research what changed in Next.js 15"</div>
-            <div class="eval-expect">→ deep_search_exa (synthesis tier)</div>
-          </div>
-        </div>
-        <div class="eval-card">
-          <div class="eval-num">7</div>
-          <div class="eval-body">
-            <div class="eval-prompt">"Find Chinese CSRC filings on fintech licensing"</div>
-            <div class="eval-expect">→ kimi-cn</div>
-          </div>
-        </div>
-        <div class="eval-card">
-          <div class="eval-num">8</div>
-          <div class="eval-body">
-            <div class="eval-prompt">"Compare Linear vs Jira for our team size"</div>
-            <div class="eval-expect">→ deep_search_exa (multi-source synthesis)</div>
-          </div>
-        </div>
+        <div class="eval-card"><div class="eval-id">E1</div><div class="eval-body"><div class="eval-prompt">Summarize this URL: stripe.com/docs/...</div><div class="eval-route">→ web_fetch</div></div></div>
+        <div class="eval-card"><div class="eval-id">E2</div><div class="eval-body"><div class="eval-prompt">How does Stripe Connect onboarding work now?</div><div class="eval-route">→ doc-lookup</div></div></div>
+        <div class="eval-card"><div class="eval-id">E3</div><div class="eval-body"><div class="eval-prompt">Find GCC competitors for Careem delivery</div><div class="eval-route">→ company_research + advanced_search</div></div></div>
+        <div class="eval-card"><div class="eval-id">E4</div><div class="eval-body"><div class="eval-prompt">Deep research UAE aftermarket insurance</div><div class="eval-route">→ deep_researcher(pro)</div></div></div>
+        <div class="eval-card"><div class="eval-id">E5</div><div class="eval-body"><div class="eval-prompt">What are people saying about OpenAI on X?</div><div class="eval-route">→ grok-x</div></div></div>
+        <div class="eval-card"><div class="eval-id">E6</div><div class="eval-body"><div class="eval-prompt">Research what changed in Next.js 15 vs 14</div><div class="eval-route">→ deep_search_exa</div></div></div>
+        <div class="eval-card"><div class="eval-id">E7</div><div class="eval-body"><div class="eval-prompt">Find Chinese CSRC filings on fintech</div><div class="eval-route">→ kimi-cn</div></div></div>
+        <div class="eval-card"><div class="eval-id">E8</div><div class="eval-body"><div class="eval-prompt">Compare Linear vs Jira for 15-person team</div><div class="eval-route">→ deep_search_exa</div></div></div>
+        <div class="eval-card"><div class="eval-id">E9</div><div class="eval-body"><div class="eval-prompt">What's the latest pricing for Vercel Pro?</div><div class="eval-route">→ doc-lookup</div></div></div>
+        <div class="eval-card"><div class="eval-id">E10</div><div class="eval-body"><div class="eval-prompt">Comprehensive analysis of GCC food delivery</div><div class="eval-route">→ deep_researcher(pro)</div></div></div>
+        <div class="eval-card"><div class="eval-id">E11</div><div class="eval-body"><div class="eval-prompt">Does Supabase support RLS with Edge Functions?</div><div class="eval-route">→ doc-lookup</div></div></div>
+        <div class="eval-card"><div class="eval-id">E12</div><div class="eval-body"><div class="eval-prompt">What changed in OpenAI API: GPT-4o → GPT-5?</div><div class="eval-route">→ deep_search_exa</div></div></div>
+        <div class="eval-card"><div class="eval-id">E13</div><div class="eval-body"><div class="eval-prompt">Look into CF Workers WebSocket handling</div><div class="eval-route">→ doc-lookup</div></div></div>
+        <div class="eval-card"><div class="eval-id">E14</div><div class="eval-body"><div class="eval-prompt">What's Tailscale ACL syntax for tag access?</div><div class="eval-route">→ doc-lookup</div></div></div>
+        <div class="eval-card"><div class="eval-id">E15</div><div class="eval-body"><div class="eval-prompt">Research best CRM tools for Dubai sales team</div><div class="eval-route">→ deep_search_exa</div></div></div>
+        <div class="eval-card"><div class="eval-id">E16</div><div class="eval-body"><div class="eval-prompt">Does Next.js 15 still support Pages Router?</div><div class="eval-route">→ doc-lookup</div></div></div>
+        <div class="eval-card"><div class="eval-id">E17</div><div class="eval-body"><div class="eval-prompt">Research Supabase realtime subscriptions</div><div class="eval-route">→ doc-lookup</div></div></div>
+        <div class="eval-card"><div class="eval-id">E18</div><div class="eval-body"><div class="eval-prompt">Lambda vs CF Workers for edge computing</div><div class="eval-route">→ deep_search_exa</div></div></div>
+        <div class="eval-card"><div class="eval-id">E19</div><div class="eval-body"><div class="eval-prompt">Deep research Stripe payment architecture</div><div class="eval-route">→ deep_researcher(pro)</div></div></div>
+        <div class="eval-card"><div class="eval-id">E20</div><div class="eval-body"><div class="eval-prompt">Vercel pricing — worth switching from Netlify?</div><div class="eval-route">→ deep_search_exa</div></div></div>
+        <div class="eval-card"><div class="eval-id">E21</div><div class="eval-body"><div class="eval-prompt">Research Prisma connection pooling config</div><div class="eval-route">→ doc-lookup</div></div></div>
+        <div class="eval-card"><div class="eval-id">E22</div><div class="eval-body"><div class="eval-prompt">Comprehensive analysis: Clerk multi-tenant auth</div><div class="eval-route">→ doc-lookup</div></div></div>
+        <div class="eval-card"><div class="eval-id">E23</div><div class="eval-body"><div class="eval-prompt">Best serverless DB options for Dubai SaaS</div><div class="eval-route">→ deep_search_exa</div></div></div>
+        <div class="eval-card"><div class="eval-id">E24</div><div class="eval-body"><div class="eval-prompt">Deep research CF vs AWS edge computing</div><div class="eval-route">→ deep_researcher(pro)</div></div></div>
+        <div class="eval-card" style="border-color: var(--accent-amber);"><div class="eval-id" style="background: var(--accent-amber-dim); color: var(--accent-amber); border-color: var(--accent-amber);">E25</div><div class="eval-body"><div class="eval-prompt">Deep research Prisma config — cite official settings</div><div class="eval-route">→ doc-lookup (substance beats "deep research")</div></div></div>
+        <div class="eval-card"><div class="eval-id">E26</div><div class="eval-body"><div class="eval-prompt">Research Clerk auth — deciding between Clerk & Auth0</div><div class="eval-route">→ deep_search_exa (implicit comparison)</div></div></div>
+        <div class="eval-card"><div class="eval-id">E27</div><div class="eval-body"><div class="eval-prompt">Summarize URL + does product support self-hosting?</div><div class="eval-route">→ web_fetch + doc-lookup (decompose)</div></div></div>
+        <div class="eval-card"><div class="eval-id">E28</div><div class="eval-body"><div class="eval-prompt">Check docs: Next.js 15.2 caching vs 15.1</div><div class="eval-route">→ doc-lookup (specific changelog)</div></div></div>
+        <div class="eval-card"><div class="eval-id">E29</div><div class="eval-body"><div class="eval-prompt">Stripe Connect + are people on X complaining?</div><div class="eval-route">→ doc-lookup + grok-x (decompose)</div></div></div>
+        <div class="eval-card" style="border-color: var(--accent-amber);"><div class="eval-id" style="background: var(--accent-amber-dim); color: var(--accent-amber); border-color: var(--accent-amber);">E30</div><div class="eval-body"><div class="eval-prompt">帮我deep research Supabase realtime，只看官方文档</div><div class="eval-route">→ doc-lookup (official docs only)</div></div></div>
+        <div class="eval-card"><div class="eval-id">E31</div><div class="eval-body"><div class="eval-prompt">Read this URL + is Pages Router still supported?</div><div class="eval-route">→ web_fetch + doc-lookup (decompose)</div></div></div>
+        <div class="eval-card"><div class="eval-id">E32</div><div class="eval-body"><div class="eval-prompt">Research Stripe Connect — evaluating Stripe vs Adyen</div><div class="eval-route">→ deep_search_exa (implicit comparison)</div></div></div>
       </div>
+
+      <p style="color: var(--text-dim); font-size: 13px; margin-top: 16px;">E25 and E30 (amber) were the hardest — they combine "deep research" phrasing with single-product official-docs substance. The final frontmatter reconciliation in Round 10 resolved both.</p>
     </div>
 
     <div class="separator"></div>
 
-    <!-- Summary -->
+    <!-- Files changed -->
     <div class="phase">
       <div class="ve-card ve-card--hero" style="text-align: center; padding: 32px;">
-        <h3 style="justify-content: center; font-size: 18px; margin-bottom: 12px;">Summary: 4 files changed, 1 unchanged</h3>
-        <p style="max-width: 550px; margin: 0 auto;">
-          The core fix is a shared taxonomy — four categories, four owners — embedded identically in every file. Exa owns discovery and research. web_fetch only reads known URLs. Quality is the routing signal, not cost.
+        <h3 style="justify-content: center; font-size: 18px; margin-bottom: 16px;">Final State: 4 files updated</h3>
+        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+          <span class="file-badge" style="font-size: 13px; padding: 4px 12px;">exa/SKILL.md v2</span>
+          <span class="file-badge" style="font-size: 13px; padding: 4px 12px;">doc-lookup/SKILL.md v2</span>
+          <span class="file-badge" style="font-size: 13px; padding: 4px 12px;">TOOLS.md</span>
+          <span class="file-badge" style="font-size: 13px; padding: 4px 12px;">web-scraper/SKILL.md</span>
+        </div>
+        <p style="max-width: 600px; margin: 16px auto 0; font-size: 14px; color: var(--text-dim);">
+          The single most impactful change: frontmatter draws boundaries on substance, not verbs. That killed the biggest failure mode — over-indexing on words like "research" and "deep research" instead of looking at what the user actually needs.
         </p>
       </div>
     </div>
