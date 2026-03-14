@@ -381,7 +381,7 @@ small { font-size:12px; color:var(--text-dim); }
   <p class="lead">Updated implementation plan after deep research into state-of-the-art embedding models, extraction LLMs, reranking systems, and database engines. Every component re-evaluated for a "quality-first, cost-secondary" approach on MacBook M2 24GB.</p>
   <div class="hero-meta">
     <span><span class="dot" style="background:var(--gold)"></span> 14 Mar 2026</span>
-    <span><span class="dot" style="background:var(--teal)"></span> Mem0 OSS + Kùzu + Qdrant</span>
+    <span><span class="dot" style="background:var(--teal)"></span> Mem0 OSS + Neo4j CE + Qdrant</span>
     <span><span class="dot" style="background:var(--green)"></span> 4 research tracks synthesized</span>
   </div>
 </div>
@@ -400,7 +400,7 @@ small { font-size:12px; color:var(--text-dim); }
   </div>
   <div class="stat">
     <div class="stat-val" style="color:var(--teal)">0</div>
-    <div class="stat-label">Docker containers needed</div>
+    <div class="stat-label">Docker containers</div>
   </div>
   <div class="stat">
     <div class="stat-val" style="color:var(--green)">3</div>
@@ -419,7 +419,7 @@ small { font-size:12px; color:var(--text-dim); }
   <div class="change-arrow"><span class="old">text-embedding-3-small (cloud, 1536d)</span> <span class="arr">→</span> <span class="new">BGE-M3 local (1024d) + voyage-4-large cloud option</span></div>
   <div class="change-arrow"><span class="old">gpt-4.1-nano (cloud only)</span> <span class="arr">→</span> <span class="new">Hybrid: Claude Sonnet 4.6 real-time + Qwen3-14B local batch</span></div>
   <div class="change-arrow"><span class="old">Cohere rerank-v3.0 (cloud)</span> <span class="arr">→</span> <span class="new">BGE-reranker-v2-gemma (local, 2B params)</span></div>
-  <div class="change-arrow"><span class="old">FalkorDB (Docker, no Mem0 support)</span> <span class="arr">→</span> <span class="new">Kùzu embedded (zero-infra, native Mem0)</span></div>
+  <div class="change-arrow"><span class="old">FalkorDB (Docker, no Mem0 support)</span> <span class="arr">→</span> <span class="new">Neo4j CE via Homebrew (Mem0 default, full Cypher, no Docker)</span></div>
   <div class="change-arrow"><span class="old">Qdrant embedded mode</span> <span class="arr">→</span> <span class="new">Qdrant native binary (brew install, no Docker)</span></div>
   <div class="change-arrow"><span class="old">3 cloud API dependencies</span> <span class="arr">→</span> <span class="new">0 required cloud deps (cloud optional for quality boost)</span></div>
   <div class="change-arrow"><span class="old">Docker required (FalkorDB)</span> <span class="arr">→</span> <span class="new">Fully Docker-free stack</span></div>
@@ -529,48 +529,49 @@ small { font-size:12px; color:var(--text-dim); }
 <div id="s5" class="sec-head anim" style="--i:19"><span class="sec-num">5</span> Graph Database — Critical Findings</div>
 
 <div class="callout callout--warn anim" style="--i:20">
-  <strong>Critical discovery:</strong> FalkorDB (the v1 plan's choice) is <strong>NOT natively supported by Mem0</strong>. Only 4 graph backends are: Neo4j, Memgraph, Kùzu, and AWS Neptune. The v1 plan would have required writing ~300 lines of custom adapter code. This changes the entire graph DB decision.
+  <strong>Critical discoveries:</strong> (1) FalkorDB (v1's choice) has <strong>zero Mem0 support</strong> — would've required ~300 lines of custom adapter. (2) Kùzu (our v2 first pick) was <strong>archived in early 2026</strong> — the company pivoted, project is EOL. Only 2 viable self-hosted options remain with native Mem0 support: <strong>Neo4j CE</strong> and <strong>Memgraph</strong>.
 </div>
 
 <div class="table-wrap anim" style="--i:21">
 <table>
 <thead><tr><th>Database</th><th>Type</th><th>Query Perf (100K nodes)</th><th>RAM</th><th>Docker?</th><th>Mem0</th><th>Cypher</th><th>Verdict</th></tr></thead>
 <tbody>
-<tr style="background:var(--green-dim)"><td><strong>Kùzu</strong></td><td>Embedded (C++)</td><td>1–10ms (3-hop)</td><td>100–300MB</td><td>No — <code>pip install kuzu</code></td><td>✅ native</td><td>Subset</td><td><span class="badge badge--best">Winner</span></td></tr>
-<tr><td>Neo4j CE</td><td>Server (JVM)</td><td>5–50ms (3-hop)</td><td>2–4GB</td><td>No — <code>brew install</code></td><td>✅ default</td><td>Full</td><td><span class="badge badge--good">Most mature</span></td></tr>
-<tr><td>Memgraph</td><td>In-memory (C++)</td><td>&lt;1ms (hot)</td><td>500MB–2GB</td><td>Yes (macOS)</td><td>✅ native</td><td>Full</td><td><span class="badge badge--ok">Fast but Docker</span></td></tr>
-<tr><td>FalkorDB</td><td>Redis module (C)</td><td>0.1–2ms (3-hop)</td><td>50–200MB</td><td>Yes (macOS)</td><td>❌ no support</td><td>OpenCypher</td><td><span class="badge badge--warn">v1 pick — wrong</span></td></tr>
+<tr style="background:var(--green-dim)"><td><strong>Neo4j CE</strong></td><td>Server (JVM)</td><td>5–50ms (3-hop)</td><td>2–4GB</td><td>No — <code>brew install neo4j</code></td><td>✅ default</td><td>Full</td><td><span class="badge badge--best">Winner</span></td></tr>
+<tr><td>Memgraph</td><td>In-memory (C++)</td><td>&lt;1ms (hot)</td><td>500MB–2GB</td><td>Yes (macOS)</td><td>✅ native</td><td>Full</td><td><span class="badge badge--good">Faster, but Docker</span></td></tr>
+<tr><td><del>Kùzu</del></td><td><del>Embedded</del></td><td>—</td><td>—</td><td>—</td><td><del>✅</del></td><td>—</td><td><span class="badge badge--warn">Archived / EOL</span></td></tr>
+<tr><td>FalkorDB</td><td>Redis module (C)</td><td>0.1–2ms</td><td>50–200MB</td><td>Yes (macOS)</td><td>❌ none</td><td>OpenCypher</td><td><span class="badge badge--warn">No Mem0 support</span></td></tr>
 </tbody>
 </table>
 </div>
 
 <div class="grid-2 anim" style="--i:22">
   <div class="ve-card">
-    <h3 style="color:var(--green)">Kùzu — Why it wins</h3>
+    <h3 style="color:var(--green)">Neo4j CE — Why it wins</h3>
     <ul>
-      <li><strong>Zero infrastructure</strong> — embedded like SQLite, <code>pip install kuzu</code>, no server, no Docker, no JVM</li>
-      <li><strong>Fastest cold start</strong> — instant (in-process function call, no startup)</li>
-      <li><strong>Lowest memory</strong> — column-oriented, loads only what's needed, ~100–300MB for your scale</li>
-      <li><strong>Native Mem0 support</strong> — <code>KuzuConfig(db="/path")</code>, done</li>
-      <li><strong>2–10x faster than Neo4j</strong> on complex multi-hop queries (LDBC benchmark)</li>
-      <li><strong>Backup</strong> — just copy the directory</li>
+      <li><strong>Mem0's default graph backend</strong> — best documented path, zero adapter work</li>
+      <li><strong>Full Cypher</strong> — most mature query language, best tooling, most LangChain/LlamaIndex integrations</li>
+      <li><strong>No Docker</strong> — native macOS install via <code>brew install neo4j</code></li>
+      <li><strong>Graph algorithms</strong> — GDS library for PageRank, community detection, shortest path, centrality</li>
+      <li><strong>Full-text search</strong> — native Lucene-based FTS built in</li>
+      <li><strong>Active project</strong> — 14K+ GitHub stars, continuous development, massive community</li>
+      <li><strong>Upgrade path</strong> — if you outgrow local, Neo4j AuraDB cloud is one config change in Mem0</li>
     </ul>
   </div>
   <div class="ve-card">
-    <h3 style="color:var(--amber)">Kùzu — Known limitations</h3>
+    <h3 style="color:var(--amber)">Neo4j CE — Trade-offs</h3>
     <ul>
-      <li><strong>Maturity</strong> — v0.7-0.8 range, less tooling ecosystem than Neo4j</li>
-      <li><strong>Cypher subset</strong> — some advanced patterns not yet supported (improving rapidly)</li>
-      <li><strong>No native full-text search</strong> — workaround via string matching (but Qdrant handles text search anyway)</li>
-      <li><strong>Less graph algorithm library</strong> — basic BFS/DFS/shortest-path, no PageRank or community detection yet</li>
-      <li><strong>Newer community</strong> — fewer Stack Overflow answers, less LangChain integration docs</li>
+      <li><strong>JVM overhead</strong> — 2–4GB RAM baseline (heap + page cache). Configured via <code>neo4j.conf</code></li>
+      <li><strong>Cold start</strong> — ~10–15 seconds to start (JVM warmup). Not an issue for always-on service</li>
+      <li><strong>No hot backups</strong> in CE — must stop DB or use <code>neo4j-admin database dump</code></li>
+      <li><strong>Single node only</strong> in CE — no clustering (fine for personal use)</li>
+      <li><strong>Slower than Memgraph/FalkorDB</strong> on raw traversal — but 5–50ms for 3-hop on 100K nodes is more than adequate</li>
     </ul>
   </div>
 </div>
 
 <div class="verdict anim" style="--i:23">
-  <strong>Decision: Kùzu (embedded)</strong> — eliminates Docker entirely, lowest memory footprint, native Mem0 support, 2–10x faster than Neo4j on traversal. The maturity trade-off is acceptable for a personal knowledge graph. Neo4j remains a viable fallback if Kùzu's Cypher subset proves limiting — Mem0 makes switching a config change.<br><br>
-  <strong>Fallback plan:</strong> If Kùzu's Cypher gaps become a problem, switch to Neo4j CE via Homebrew. No Docker needed, full Cypher, more mature tooling — but costs 2–4GB RAM and has JVM cold-start delay.
+  <strong>Decision: Neo4j Community Edition via Homebrew</strong> — the only remaining option that's (a) natively supported by Mem0, (b) actively maintained, (c) Docker-free on macOS, and (d) has a full Cypher implementation. The 2–4GB RAM overhead is the main cost — moves total usage from ~10GB to ~12.5GB in normal operation, still leaving ~11.5GB free on your 24GB M2. Configure heap to 2GB and page cache to 1GB for personal-scale data.<br><br>
+  <strong>Alternative:</strong> If you ever want maximum graph performance and don't mind Docker, Memgraph is 3–10x faster with full Cypher and native Mem0 support. Keep it as a future option.
 </div>
 
 <!-- ==================== S6: VECTOR DB ==================== -->
@@ -625,8 +626,8 @@ small { font-size:12px; color:var(--text-dim); }
 <tr>
   <td><strong>Graph DB</strong></td>
   <td>FalkorDB (Docker)</td>
-  <td><span class="badge badge--best">100% Local</span><br>Kùzu embedded</td>
-  <td>Zero infrastructure. Faster than Neo4j. Native Mem0 support (FalkorDB had none).</td>
+  <td><span class="badge badge--best">100% Local</span><br>Neo4j CE (Homebrew)</td>
+  <td>Mem0's default backend. Full Cypher, GDS algorithms, no Docker. FalkorDB had no Mem0 support; Kùzu was archived.</td>
 </tr>
 <tr>
   <td><strong>Vector DB</strong></td>
@@ -668,7 +669,7 @@ small { font-size:12px; color:var(--text-dim); }
 <tbody>
 <tr><td><strong>Memory Engine</strong></td><td>mem0ai (Python)</td><td>Core library — fact extraction, CRUD, search</td><td>Python lib + REST API</td><td>~500MB</td></tr>
 <tr><td><strong>Vector Store</strong></td><td>Qdrant (native binary)</td><td>Best recall, native hybrid search, filterable HNSW</td><td><code>brew install qdrant</code></td><td>~600MB–1GB</td></tr>
-<tr><td><strong>Graph Store</strong></td><td>Kùzu (embedded)</td><td>Zero-infra, fastest traversal, native Mem0, no Docker</td><td>In-process (<code>pip install kuzu</code>)</td><td>~100–300MB</td></tr>
+<tr><td><strong>Graph Store</strong></td><td>Neo4j CE (Homebrew)</td><td>Mem0 default, full Cypher, GDS algorithms, no Docker</td><td><code>brew services start neo4j</code></td><td>~2–4GB</td></tr>
 <tr><td><strong>Extraction LLM</strong></td><td>Tiered: Sonnet → Haiku → GPT-4.1-mini → Qwen3-14B</td><td>Quality matched to document importance</td><td>API + Ollama local</td><td>~9GB (local only)</td></tr>
 <tr><td><strong>Embeddings</strong></td><td>BGE-M3 (local via Ollama)</td><td>Best multilingual, beats cloud, 1024d</td><td>Ollama</td><td>~2.3GB</td></tr>
 <tr><td><strong>Reranker</strong></td><td>BGE-reranker-v2-gemma (local)</td><td>Outperforms Cohere, 2B params, M2 Metal</td><td>FlagEmbedding / sentence-transformers</td><td>~1.5GB</td></tr>
@@ -685,29 +686,29 @@ small { font-size:12px; color:var(--text-dim); }
   <h3>Normal operation (search + incremental ingestion via cloud LLM)</h3>
   <div class="ram-bar">
     <div class="ram-seg" style="width:17%;background:#64748b">macOS 4GB</div>
-    <div class="ram-seg" style="width:4%;background:var(--teal)">Kùzu 1GB</div>
+    <div class="ram-seg" style="width:12%;background:var(--teal)">Neo4j 3GB</div>
     <div class="ram-seg" style="width:4%;background:var(--gold)">Qdrant 1GB</div>
     <div class="ram-seg" style="width:10%;background:var(--green)">BGE-M3 2.3GB</div>
     <div class="ram-seg" style="width:6%;background:var(--amber)">Reranker 1.5GB</div>
     <div class="ram-seg" style="width:2%;background:var(--accent)">Mem0 0.5GB</div>
-    <div class="ram-seg" style="width:57%;background:var(--surface2);color:var(--text-dim);border:1px solid var(--border)">Free: ~13.7GB</div>
+    <div class="ram-seg" style="width:49%;background:var(--surface2);color:var(--text-dim);border:1px solid var(--border)">Free: ~11.7GB</div>
   </div>
-  <p class="text-sm text-dim mt-8">Total used: ~10.3GB — comfortable headroom for browser, apps, OpenClaw gateway</p>
+  <p class="text-sm text-dim mt-8">Total used: ~12.3GB — comfortable headroom for browser, apps, OpenClaw gateway</p>
 </div>
 
 <div class="ve-card anim" style="--i:36">
   <h3>Batch extraction mode (local Qwen3-14B loaded)</h3>
   <div class="ram-bar">
     <div class="ram-seg" style="width:17%;background:#64748b">macOS 4GB</div>
-    <div class="ram-seg" style="width:4%;background:var(--teal)">Kùzu 1GB</div>
+    <div class="ram-seg" style="width:12%;background:var(--teal)">Neo4j 3GB</div>
     <div class="ram-seg" style="width:4%;background:var(--gold)">Qdrant 1GB</div>
     <div class="ram-seg" style="width:10%;background:var(--green)">BGE-M3 2.3GB</div>
     <div class="ram-seg" style="width:6%;background:var(--amber)">Reranker 1.5GB</div>
     <div class="ram-seg" style="width:2%;background:var(--accent)">Mem0 0.5GB</div>
     <div class="ram-seg" style="width:37%;background:var(--rose)">Qwen3-14B 9GB</div>
-    <div class="ram-seg" style="width:20%;background:var(--surface2);color:var(--text-dim);border:1px solid var(--border)">Free: ~4.7GB</div>
+    <div class="ram-seg" style="width:12%;background:var(--surface2);color:var(--text-dim);border:1px solid var(--border)">Free: ~2.7GB</div>
   </div>
-  <p class="text-sm text-dim mt-8">Total used: ~19.3GB — tight but workable. Run batch jobs when not doing heavy Mac work. Qwen3 auto-unloads from Ollama when idle.</p>
+  <p class="text-sm text-dim mt-8">Total used: ~21.3GB — tight. Run batch jobs when not doing heavy Mac work. Qwen3 auto-unloads from Ollama when idle. Consider using cloud LLM for batch if RAM is a concern.</p>
 </div>
 
 <!-- ==================== S10: COST ==================== -->
@@ -767,11 +768,13 @@ config = {
         },
     },
 
-    # --- Graph Store: Kùzu embedded (no Docker!) ---
+    # --- Graph Store: Neo4j CE (Homebrew, no Docker) ---
     "graph_store": {
-        "provider": "kuzu",
+        "provider": "neo4j",
         "config": {
-            "db": "~/memory-palace/kuzu-db",
+            "url": "bolt://localhost:7687",
+            "username": "neo4j",
+            "password": "your-secure-password",  # set during neo4j setup
         },
         "custom_prompt": EXTRACTION_PROMPT,  # see below
     },
@@ -831,16 +834,22 @@ memory_local = Memory.from_config(config_local)</pre>
 
 <pre class="anim" style="--i:42"># ~/memory-palace/setup.sh — No Docker needed!
 
-# 1. Install Qdrant (native macOS binary)
+# 1. Install Neo4j CE (JVM-based graph DB)
+brew install neo4j
+# Configure memory in /opt/homebrew/etc/neo4j/neo4j.conf:
+#   server.memory.heap.initial_size=1g
+#   server.memory.heap.max_size=2g
+#   server.memory.pagecache.size=1g
+neo4j-admin dbms set-initial-password your-secure-password
+brew services start neo4j           # graph DB on bolt://localhost:7687
+# Web UI: http://localhost:7474
+
+# 2. Install Qdrant (native macOS binary)
 brew install qdrant/tap/qdrant
-# Start: qdrant --config-path ~/memory-palace/qdrant-config.yaml
-# Or: brew services start qdrant
+brew services start qdrant           # vector store on port 6333
 
-# 2. Install Kùzu (Python package, no server)
-pip install kuzu
-
-# 3. Install Mem0
-pip install mem0ai
+# 3. Install Mem0 with graph extras
+pip install "mem0ai[graph]"
 
 # 4. Install local models via Ollama
 ollama pull bge-m3                  # embeddings (~1.1GB download)
@@ -850,10 +859,10 @@ ollama pull qwen3:14b               # local LLM fallback (~9GB download)
 pip install FlagEmbedding
 # Model downloads on first use: BAAI/bge-reranker-v2-gemma (~2GB)
 
-# 6. Start services
-qdrant &                            # vector store on port 6333
-# Kùzu = embedded, no service to start
-# Ollama = already running (handles embedding + local LLM)
+# 6. Verify services
+neo4j status                        # should show "running"
+curl http://localhost:6333/health    # Qdrant health check
+ollama list                         # confirm models pulled
 
 # 7. Start Mem0 API
 uvicorn memory_palace.api:app --host 0.0.0.0 --port 8200</pre>
@@ -864,14 +873,14 @@ uvicorn memory_palace.api:app --host 0.0.0.0 --port 8200</pre>
 <div class="ve-card ve-card--hero anim" style="--i:44">
   <h3>Phase 1 — Foundation <small>(Week 1)</small></h3>
   <ul>
-    <li>Install Qdrant native binary (<code>brew install</code>), Kùzu (<code>pip install</code>), Mem0 OSS</li>
+    <li>Install Neo4j CE (<code>brew install neo4j</code>), Qdrant (<code>brew install qdrant</code>), Mem0 OSS (<code>pip install "mem0ai[graph]"</code>)</li>
     <li>Pull BGE-M3 and Qwen3-14B via Ollama</li>
     <li>Write custom extraction prompt tuned for your entity schema (people, companies, projects, decisions, action items)</li>
     <li>Set up the FastAPI REST server on port 8200</li>
     <li>Test with manual <code>.add()</code> and <code>.search()</code> calls — verify graph+vector dual storage works</li>
     <li>Install BGE-reranker-v2-gemma via FlagEmbedding, integrate as post-search step</li>
   </ul>
-  <p class="text-sm text-dim mt-8">Deps: Python 3.10+, Ollama, Homebrew. No Docker.</p>
+  <p class="text-sm text-dim mt-8">Deps: Python 3.10+, Java 21+ (for Neo4j), Ollama, Homebrew. No Docker.</p>
 </div>
 
 <div class="ve-card anim" style="--i:45">
